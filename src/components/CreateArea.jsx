@@ -5,11 +5,17 @@ import AddIcon from "@mui/icons-material/Add";
 
 function CreateArea(props) {
   const [note, setNote] = useState({
+    state: false,
     title: "",
     content: "",
   });
 
-  function handleClick(event) {}
+  function handleClick(event) {
+    console.log("click");
+    setNote((prev) => {
+      return { ...prev, ["state"]: true };
+    });
+  }
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -25,6 +31,7 @@ function CreateArea(props) {
   function submitNote(event) {
     props.onAdd(note);
     setNote({
+      state: false,
       title: "",
       content: "",
     });
@@ -41,14 +48,16 @@ function CreateArea(props) {
           value={note.title}
           placeholder="Title"
         />
-        <textarea
-          name="content"
-          onChange={handleChange}
-          value={note.content}
-          placeholder="Take a note..."
-          rows="3"
-        />
-        <Zoom in={true}>
+        {note.state && (
+          <textarea
+            name="content"
+            onChange={handleChange}
+            value={note.content}
+            placeholder="Take a note..."
+            rows="3"
+          />
+        )}
+        <Zoom in={note.state}>
           <Fab onClick={submitNote}>
             <AddIcon />
           </Fab>
